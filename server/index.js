@@ -35,18 +35,25 @@ app.get('/api/products', async (req, res, next) => {
   }
 });
 
+app.get('/api/users/:id/favorites', async (req, res, next) => {
+  try {
+    const favorites = await fetchFavorites(req.params.id);
+    res.send(favorites);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.post('/api/users/:id/favorites', async (req, res, next) => {
   try {
     const favorite = await createFavorite({
-      user_id: req.params.id,
-      product_id: req.body.product_id
+      user_id: req.params.id
     });
     res.status(201).send(favorite);
   } catch (error) {
     next(error);
   }
 });
-
 
 app.delete('/api/users/:user_id/favorites/:id', async (req, res, next) => {
   try {
@@ -65,8 +72,8 @@ const init = async () => {
     await client.connect();
     await createTables();
 
-    const [alice, bob, charlie, apple, banana, cherry] = await Promise.all([
-      createUser({ username: 'alice', password: 'alice@100' }),
+    const [wilson, bob, charlie, apple, banana, cherry] = await Promise.all([
+      createUser({ username: 'wilson', password: 'wilson@100' }),
       createUser({ username: 'bob', password: 'bob@200' }),
       createUser({ username: 'charlie', password: 'charlie@300' }),
       createProduct({ name: 'apple' }),
@@ -78,7 +85,7 @@ const init = async () => {
     console.log(await fetchProducts());
 
     await Promise.all([
-      createFavorite({ user_id: alice.id, product_id: apple.id }),
+      createFavorite({ user_id: wilson.id, product_id: apple.id }),
       createFavorite({ user_id: bob.id, product_id: banana.id }),
       createFavorite({ user_id: charlie.id, product_id: cherry.id }),
       createFavorite({ user_id: charlie.id, product_id: apple.id })
