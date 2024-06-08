@@ -71,7 +71,15 @@ const fetchProducts = async () => {
   return response.rows;
 };
 
-
+const createFavorite = async ({ user_id, product_id }) => {
+  const SQL = `
+    INSERT INTO favorites (id, user_id, product_id)
+    VALUES ($1, $2, $3)
+    RETURNING *
+  `;
+  const response = await client.query(SQL, [uuid.v4(), user_id, product_id]);
+  return response.rows[0];
+};
 
 module.exports = {
   client,
