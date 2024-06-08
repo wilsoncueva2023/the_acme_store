@@ -47,6 +47,19 @@ app.post('/api/users/:id/favorites', async (req, res, next) => {
   }
 });
 
+
+app.delete('/api/users/:user_id/favorites/:id', async (req, res, next) => {
+  try {
+    await destroyFavorite({
+      id: req.params.id,
+      user_id: req.params.user_id
+    });
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});
+
 const init = async () => {
   try {
     await client.connect();
