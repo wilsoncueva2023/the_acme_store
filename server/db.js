@@ -63,6 +63,22 @@ const fetchUsers = async () => {
   return response.rows;
 };
 
+const fetchProducts = async () => {
+  const SQL = `
+    SELECT * FROM products
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
+
+app.get('/api/products', async (req, res, next) => {
+  try {
+    const products = await fetchProducts();
+    res.send(products);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = {
   client,
