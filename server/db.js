@@ -71,14 +71,7 @@ const fetchProducts = async () => {
   return response.rows;
 };
 
-app.get('/api/products', async (req, res, next) => {
-  try {
-    const products = await fetchProducts();
-    res.send(products);
-  } catch (error) {
-    next(error);
-  }
-});
+
 
 module.exports = {
   client,

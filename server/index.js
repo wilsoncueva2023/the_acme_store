@@ -26,7 +26,14 @@ app.get('/api/users', async (req, res, next) => {
   }
 });
 
-
+app.get('/api/products', async (req, res, next) => {
+  try {
+    const products = await fetchProducts();
+    res.send(products);
+  } catch (error) {
+    next(error);
+  }
+});
 
 const init = async () => {
   try {
